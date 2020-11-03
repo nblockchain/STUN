@@ -1,0 +1,17 @@
+name: ci
+on: push
+
+jobs:
+  build_and_deploy:
+    env:
+      BASE_VERSION: 0.1
+    runs-on: windows-latest
+    steps:
+    - uses: actions/checkout@v1
+    - name: Build
+      run: |
+        dotnet build STUN.sln -p:Configuration=Release
+    - name: Package and upload
+      run: |
+        git clone https://github.com/nblockchain/fsx
+        fsx\Tools\fsi.bat fsx\Tools\nugetPush.fsx $env:BASE_VERSION ${{secrets.NUGET_API_KEY}}
