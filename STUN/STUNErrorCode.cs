@@ -16,6 +16,6 @@ namespace STUN
         MissingUsername = 432,
         UseTLS = 433,
         ServerError = 500,
-        GloablFailure = 600,
+        GlobalFailure = 600,
     }
 }
