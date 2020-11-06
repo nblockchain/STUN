@@ -7,9 +7,9 @@ namespace STUN.Attributes
 {
     public class STUNRfc3489
     {
-        public static STUNQueryResult Query(Socket socket, IPEndPoint server, STUNQueryType queryType, int ReceiveTimeout)
+        public static STUNQueryFullResult Query(Socket socket, IPEndPoint server, STUNQueryType queryType, int ReceiveTimeout)
         {
-            var result = new STUNQueryResult(); // the query result
+            var result = new STUNQueryFullResult(); // the query result
             result.Socket = socket;
             result.ServerEndPoint = server;
             result.NATType = STUNNATType.Unspecified;
@@ -95,7 +95,7 @@ namespace STUN.Attributes
             // stop querying and return the public ip if user just wanted to know public ip
             if (queryType == STUNQueryType.PublicIP)
             {
-                result.QueryError = STUNQueryError.Success;
+                result.QueryError = STUNQueryError.None;
                 return result;
             }
 
@@ -113,7 +113,7 @@ namespace STUN.Attributes
                 // if we didnt receive a response
                 if (responseBuffer == null)
                 {
-                    result.QueryError = STUNQueryError.Success;
+                    result.QueryError = STUNQueryError.None;
                     result.NATType = STUNNATType.SymmetricUDPFirewall;
                     return result;
                 }
@@ -132,7 +132,7 @@ namespace STUN.Attributes
 
                 if (message.MessageType == STUNMessageTypes.BindingResponse)
                 {
-                    result.QueryError = STUNQueryError.Success;
+                    result.QueryError = STUNQueryError.None;
                     result.NATType = STUNNATType.OpenInternet;
                     return result;
                 }
@@ -186,7 +186,7 @@ namespace STUN.Attributes
 
                 if (message.MessageType == STUNMessageTypes.BindingResponse)
                 {
-                    result.QueryError = STUNQueryError.Success;
+                    result.QueryError = STUNQueryError.None;
                     result.NATType = STUNNATType.FullCone;
                     return result;
                 }
@@ -216,7 +216,7 @@ namespace STUN.Attributes
             // if user only wanted to know the NAT is open or not
             if (queryType == STUNQueryType.OpenNAT)
             {
-                result.QueryError = STUNQueryError.Success;
+                result.QueryError = STUNQueryError.None;
                 result.NATType = STUNNATType.Unspecified;
                 return result;
             }
@@ -290,7 +290,7 @@ namespace STUN.Attributes
 
             if (!mappedAddressAttr.EndPoint.Equals(result.PublicEndPoint))
             {
-                result.QueryError = STUNQueryError.Success;
+                result.QueryError = STUNQueryError.None;
                 result.NATType = STUNNATType.Symmetric;
                 result.PublicEndPoint = null;
                 return result;
@@ -305,7 +305,7 @@ namespace STUN.Attributes
 
             if (responseBuffer == null)
             {
-                result.QueryError = STUNQueryError.Success;
+                result.QueryError = STUNQueryError.None;
                 result.NATType = STUNNATType.PortRestricted;
                 return result;
             }
@@ -345,7 +345,7 @@ namespace STUN.Attributes
                 return result;
             }
 
-            result.QueryError = STUNQueryError.Success;
+            result.QueryError = STUNQueryError.None;
             result.NATType = STUNNATType.Restricted;
             return result;
         }

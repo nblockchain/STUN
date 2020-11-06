@@ -7,11 +7,11 @@ namespace STUN
 {
     public class STUNRfc5780
     {
-        public static STUNQueryResult Query(Socket socket, IPEndPoint server, STUNQueryType queryType, int ReceiveTimeout)
+        public static STUNQueryFullResult Query(Socket socket, IPEndPoint server, STUNQueryType queryType, int ReceiveTimeout)
         {
             STUNNatMappingBehavior mappingBehavior = STUNNatMappingBehavior.EndpointIndependentMapping;
             STUNNatFilteringBehavior filteringBehavior = STUNNatFilteringBehavior.EndpointIndependentFiltering;
-            var result = new STUNQueryResult(); // the query result
+            var result = new STUNQueryFullResult(); // the query result
             result.Socket = socket;
             result.ServerEndPoint = server;
             result.NATType = STUNNATType.Unspecified;
@@ -90,7 +90,7 @@ namespace STUN
             // stop querying and return the public ip if user just wanted to know public ip
             if (queryType == STUNQueryType.PublicIP)
             {
-                result.QueryError = STUNQueryError.Success;
+                result.QueryError = STUNQueryError.None;
                 return result;
             }
 

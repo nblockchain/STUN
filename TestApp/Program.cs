@@ -13,10 +13,19 @@ namespace TestApp
                 throw new Exception("Failed to resolve STUN server address");
 
             STUNClient.ReceiveTimeout = 500;
-            var queryResult = STUNClient.Query(stunEndPoint, STUNQueryType.ExactNAT, true, NATTypeDetectionRFC.Rfc5780);
-            
-            if (queryResult.QueryError != STUNQueryError.Success)
-                throw new Exception("Query Error: " + queryResult.QueryError.ToString());
+            STUNQueryFullResult queryResult;
+            try
+            {
+                queryResult = STUNClient.TryQuery(stunEndPoint, STUNQueryType.ExactNAT, true, NATTypeDetectionRFC.Rfc5780);
+            }
+            catch (STUNQueryErrorException ex)
+            {
+                throw new Exception("Query Error: " + ex.Error.ToString());
+            }
+            catch (STUNServerErrorException ex)
+            {
+                throw new Exception($"Server Error ({ex.ErrorCode}): {ex.ErrorPhrase}");
+            }
 
             Console.WriteLine("PublicEndPoint: {0}", queryResult.PublicEndPoint);
             Console.WriteLine("LocalEndPoint: {0}", queryResult.LocalEndPoint);

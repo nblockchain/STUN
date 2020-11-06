@@ -5,7 +5,7 @@
         /// <summary>
         /// Indicates querying was successful.
         /// </summary>
-        Success,
+        None,
 
         /// <summary>
         /// Indicates the server responsed with error.
