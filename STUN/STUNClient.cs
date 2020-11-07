@@ -172,7 +172,7 @@ namespace STUN
                 return STUNRfc5780.Query(socket, server, queryType, ReceiveTimeout);
             }
 
-            return new STUNQueryFullResult();
+            throw new Exception($"Unexpected RFC type {natTypeDetectionRfc}");
         }
     }
 }
