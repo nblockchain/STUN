@@ -36,7 +36,7 @@ namespace STUN
     }
 
     /// <summary>
-    /// Implements a RFC3489 STUN client.
+    /// Implements a STUN client.
     /// </summary>
     public static class STUNClient
     {
